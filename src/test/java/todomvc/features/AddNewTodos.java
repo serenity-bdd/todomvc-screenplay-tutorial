@@ -2,6 +2,7 @@ package todomvc.features;
 
 import net.serenitybdd.junit5.SerenityJUnit5Extension;
 import net.serenitybdd.screenplay.Actor;
+import net.serenitybdd.screenplay.actions.Open;
 import net.serenitybdd.screenplay.annotations.CastMember;
 import net.serenitybdd.screenplay.ensure.Ensure;
 import net.serenitybdd.screenplay.questions.Text;
@@ -12,6 +13,10 @@ import todomvc.screenplay.navigation.Start;
 import todomvc.screenplay.todos.AddATodoItem;
 import todomvc.screenplay.todos.TodoList;
 
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
 @ExtendWith(SerenityJUnit5Extension.class)
 class AddNewTodos {
 
@@ -21,12 +26,17 @@ class AddNewTodos {
     @Test
     @DisplayName("Add a todo item to an empty list")
     void addToEmptyList() {
+        toby.attemptsTo(Open.url("https://todomvc.com/examples/angularjs/#/"));
+
         toby.attemptsTo(
                 Start.withAnEmptyTodoList(),
                 AddATodoItem.called("Buy some milk"),
                 Ensure.that(Text.ofEach(TodoList.TODO_ITEM))
                       .containsExactly("Buy some milk")
         );
+
+        List<String> todos = toby.asksFor(Text.ofEach(TodoList.TODO_ITEM);
+        assertThat(todos).containsExactly("Buy some milk");
     }
 
     @Test
